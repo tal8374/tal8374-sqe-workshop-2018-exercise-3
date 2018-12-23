@@ -2,9 +2,9 @@ import $ from 'jquery';
 import {parseCode} from './utils/code-analyzer';
 
 import {facadeDeclaration} from './statement-payload/facade-declaration-handler';
-import {CodeHandler} from './statement-code/code-handler';
 import {SymbolicSubstitutionHandler} from './statement-symbolic-substitution/symbolic-substitution-handler';
 import {ColorHandler} from './color-condition/color-handler';
+import {FlowchartHandler} from './flowchart/flowchart-handler';
 
 $(document).ready(function () {
 
@@ -17,9 +17,11 @@ $(document).ready(function () {
 
         colorCondition(payloads, inputCodeSplitted);
 
-        let code = createCode(payloads);
+        console.log(payloads)
 
-        printCode(code);
+        let flowchar = new FlowchartHandler(payloads);
+        flowchar.createID();
+
     });
 
 });

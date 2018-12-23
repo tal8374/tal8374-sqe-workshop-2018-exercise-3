@@ -1,15 +1,3 @@
-function addMarginLeft(code, numberOfTabs) {
-    if (!code.style) {
-        code.style = {};
-    }
-
-    code.style.marginLeft = 20 * numberOfTabs + 'px';
-}
-
-function addColor(code, backgroundColor) {
-    code.style.backgroundColor = backgroundColor;
-}
-
 function replaceAll(str, search, replacement) {
     str = '' + str;
 
@@ -177,5 +165,14 @@ function getConditionPayload(condition) {
     return {before: before, between: between, after: after};
 }
 
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
 
-export {addMarginLeft, replaceAll, updateLocalVariable, getGlobalVariables, colorCondition, addColor};
+
+export {replaceAll, updateLocalVariable, getGlobalVariables, colorCondition, guid};
