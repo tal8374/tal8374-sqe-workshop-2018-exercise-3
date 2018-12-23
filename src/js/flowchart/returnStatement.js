@@ -6,7 +6,7 @@ function ReturnStatement(wrapper, payload) {
 }
 
 ReturnStatement.prototype.createID = function () {
-    if(!this.payload.flowchart) {
+    if (!this.payload.flowchart) {
         this.payload.flowchart = {};
     }
 
@@ -14,7 +14,7 @@ ReturnStatement.prototype.createID = function () {
 };
 
 ReturnStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=> operation:' +  this.getOperation();
+    this.payload.flowchart.data = this.getID() + '=> operation:' + this.getOperation();
 };
 
 ReturnStatement.prototype.getOperation = function () {

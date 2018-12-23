@@ -6,7 +6,7 @@ function VariableStatement(wrapper, payload) {
 }
 
 VariableStatement.prototype.createID = function () {
-    if(!this.payload.flowchart) {
+    if (!this.payload.flowchart) {
         this.payload.flowchart = {};
     }
 
@@ -14,7 +14,7 @@ VariableStatement.prototype.createID = function () {
 };
 
 VariableStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=> operation:' +  this.getOperation();
+    this.payload.flowchart.data = this.getID() + '=> operation:' + this.getOperation();
 };
 
 VariableStatement.prototype.getOperation = function () {

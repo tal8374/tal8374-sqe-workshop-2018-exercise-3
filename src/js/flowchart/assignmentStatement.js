@@ -6,7 +6,7 @@ function AssignmentStatement(wrapper, payload) {
 }
 
 AssignmentStatement.prototype.createID = function () {
-    if(!this.payload.flowchart) {
+    if (!this.payload.flowchart) {
         this.payload.flowchart = {};
     }
 
@@ -14,7 +14,7 @@ AssignmentStatement.prototype.createID = function () {
 };
 
 AssignmentStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=> operation:' +  this.getOperation();
+    this.payload.flowchart.data = this.getID() + '=> operation:' + this.getOperation();
 };
 
 AssignmentStatement.prototype.getOperation = function () {

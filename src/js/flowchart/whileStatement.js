@@ -8,7 +8,7 @@ function WhileStatement(wrapper, payload) {
 
 
 WhileStatement.prototype.createID = function () {
-    if(!this.payload.flowchart) {
+    if (!this.payload.flowchart) {
         this.payload.flowchart = {};
     }
 

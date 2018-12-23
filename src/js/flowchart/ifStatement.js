@@ -8,7 +8,7 @@ function IfStatement(wrapper, payload) {
 }
 
 IfStatement.prototype.createID = function () {
-    if(!this.payload.flowchart) {
+    if (!this.payload.flowchart) {
         this.payload.flowchart = {};
     }
 
@@ -29,7 +29,7 @@ IfStatement.prototype.createIDBody = function () {
 };
 
 IfStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=> operation:' +  this.getCondition();
+    this.payload.flowchart.data = this.getID() + '=> operation:' + this.getCondition();
 
     this.createBodyNodeDeclaration();
 };
