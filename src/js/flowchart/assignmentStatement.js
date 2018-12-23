@@ -25,4 +25,14 @@ AssignmentStatement.prototype.getID = function () {
     return this.payload.flowchart.id;
 };
 
+AssignmentStatement.prototype.updateNextNode = function () {
+    if(!this.wrapper) return;
+
+    let nextNode = this.wrapper.getNextNode(this.payload.flowchart.id);
+
+    if(!nextNode) return;
+
+    this.payload.flowchart.nextNode = nextNode;
+};
+
 export {AssignmentStatement};

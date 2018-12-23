@@ -28,7 +28,9 @@ FlowchartHandler.prototype.createID = function () {
         let codeType = payload.type;
         if (!this.handlers[codeType]) continue;
 
-        let flowchart = new this.handlers[codeType](this, payload);
+        let wrapper = this.wrapper ? this.wrapper : this;
+
+        let flowchart = new this.handlers[codeType](wrapper, payload);
         flowchart.createID();
     }
 };
@@ -39,8 +41,23 @@ FlowchartHandler.prototype.declareNode = function () {
         let codeType = payload.type;
         if (!this.handlers[codeType]) continue;
 
-        let flowchart = new this.handlers[codeType](this, payload);
+        let wrapper = this.wrapper ? this.wrapper : this;
+
+        let flowchart = new this.handlers[codeType](wrapper, payload);
         flowchart.declareNode();
+    }
+};
+
+FlowchartHandler.prototype.updateNextNode = function () {
+    for (let i = 0; i < this.payload.length; i++) {
+        let payload = this.payload[i];
+        let codeType = payload.type;
+        if (!this.handlers[codeType]) continue;
+
+        let wrapper = this.wrapper ? this.wrapper : this;
+
+        let flowchart = new this.handlers[codeType](wrapper, payload);
+        flowchart.updateNextNode();
     }
 };
 

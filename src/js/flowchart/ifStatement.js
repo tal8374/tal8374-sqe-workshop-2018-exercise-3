@@ -53,5 +53,27 @@ IfStatement.prototype.createBodyNodeDeclaration = function () {
     }
 };
 
+IfStatement.prototype.updateNextNode = function () {
+    if(!this.wrapper) return;
+
+    let nextNode = this.wrapper.getNextNode(this.payload.flowchart.id);
+
+    if(!nextNode) return;
+
+    this.payload.flowchart.nextNode = nextNode;
+};
+
+IfStatement.prototype.getNextNode = function (nodeID) {
+    let body = this.payload.body;
+
+    for (let i = 0; i < body.length - 1; i++) {
+        let payload = body[i];
+
+        if (payload.flowchart.id === nodeID) {
+            return body[i + 1].flowchart.id;
+        }
+    }
+};
+
 
 export {IfStatement};

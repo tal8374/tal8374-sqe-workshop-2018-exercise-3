@@ -31,5 +31,28 @@ FunctionStatement.prototype.declareNode = function () {
     }
 };
 
+FunctionStatement.prototype.getNextNode = function (nodeID) {
+    let body = this.payload.body;
+
+    for (let i = 0; i < body.length - 1; i++) {
+        let payload = body[i];
+
+        if (payload.flowchart.id === nodeID) {
+            return body[i + 1].flowchart.id;
+        }
+    }
+};
+
+FunctionStatement.prototype.updateNextNode = function () {
+    let body = this.payload.body;
+
+    for (let i = 0; i < body.length; i++) {
+        let payload = body[i];
+
+        let flowchart = new FlowchartHandler([payload], this);
+        flowchart.updateNextNode();
+    }
+};
+
 
 export {FunctionStatement};
