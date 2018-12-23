@@ -33,4 +33,15 @@ FlowchartHandler.prototype.createID = function () {
     }
 };
 
+FlowchartHandler.prototype.declareNode = function () {
+    for (let i = 0; i < this.payload.length; i++) {
+        let payload = this.payload[i];
+        let codeType = payload.type;
+        if (!this.handlers[codeType]) continue;
+
+        let flowchart = new this.handlers[codeType](this, payload);
+        flowchart.declareNode();
+    }
+};
+
 export {FlowchartHandler};

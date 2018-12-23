@@ -28,4 +28,8 @@ WhileStatement.prototype.createIDBody = function () {
     }
 };
 
+WhileStatement.prototype.getID = function () {
+    return this.payload.flowchart.id;
+};
+
 export {WhileStatement};

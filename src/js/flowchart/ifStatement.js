@@ -28,4 +28,30 @@ IfStatement.prototype.createIDBody = function () {
     }
 };
 
+IfStatement.prototype.declareNode = function () {
+    this.payload.flowchart.data = this.getID() + '=> operation:' +  this.getCondition();
+
+    this.createBodyNodeDeclaration();
+};
+
+IfStatement.prototype.getCondition = function () {
+    return this.payload.declaration.condition;
+};
+
+IfStatement.prototype.getID = function () {
+    return this.payload.flowchart.id;
+};
+
+IfStatement.prototype.createBodyNodeDeclaration = function () {
+    let body = this.payload.body;
+
+    for (let i = 0; i < body.length; i++) {
+        let payload = body[i];
+
+        let flowchart = new FlowchartHandler([payload], this);
+        flowchart.declareNode();
+    }
+};
+
+
 export {IfStatement};

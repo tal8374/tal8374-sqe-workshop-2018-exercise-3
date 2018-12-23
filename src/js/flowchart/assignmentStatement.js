@@ -13,4 +13,16 @@ AssignmentStatement.prototype.createID = function () {
     this.payload.flowchart.id = guid();
 };
 
+AssignmentStatement.prototype.declareNode = function () {
+    this.payload.flowchart.data = this.getID() + '=> operation:' +  this.getOperation();
+};
+
+AssignmentStatement.prototype.getOperation = function () {
+    return this.payload.name + ' = ' + this.payload.value;
+};
+
+AssignmentStatement.prototype.getID = function () {
+    return this.payload.flowchart.id;
+};
+
 export {AssignmentStatement};

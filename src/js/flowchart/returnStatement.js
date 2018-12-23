@@ -13,4 +13,16 @@ ReturnStatement.prototype.createID = function () {
     this.payload.flowchart.id = guid();
 };
 
+ReturnStatement.prototype.declareNode = function () {
+    this.payload.flowchart.data = this.getID() + '=> operation:' +  this.getOperation();
+};
+
+ReturnStatement.prototype.getOperation = function () {
+    return 'return ' + this.payload.value;
+};
+
+ReturnStatement.prototype.getID = function () {
+    return this.payload.flowchart.id;
+};
+
 export {ReturnStatement};
