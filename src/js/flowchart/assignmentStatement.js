@@ -14,7 +14,7 @@ AssignmentStatement.prototype.createID = function () {
 };
 
 AssignmentStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=> operation:' + this.getOperation();
+    this.payload.flowchart.data = this.getID() + '=>operation: ' + this.getOperation();
 };
 
 AssignmentStatement.prototype.getOperation = function () {
@@ -26,7 +26,8 @@ AssignmentStatement.prototype.getID = function () {
 };
 
 AssignmentStatement.prototype.updateNextNode = function () {
-    if(!this.wrapper) return;
+    console.log(this.wrapper)
+    if(!this.wrapper || !this.wrapper.getNextNode) return;
 
     let nextNode = this.wrapper.getNextNode(this.payload.flowchart.id);
 
@@ -34,5 +35,18 @@ AssignmentStatement.prototype.updateNextNode = function () {
 
     this.payload.flowchart.nextNode = nextNode;
 };
+
+AssignmentStatement.prototype.createNodeDeclarationCode = function (nodeDeclarationCode) {
+    nodeDeclarationCode.push(this.payload.flowchart.data);
+};
+
+AssignmentStatement.prototype.createNodeNextCode = function (nodeDeclarationCode) {
+    if(!this.payload.flowchart.nextNode) return;
+
+    let nextNodeData = this.payload.flowchart.id + '->' + this.payload.flowchart.nextNode;
+
+    nodeDeclarationCode.push(nextNodeData);
+};
+
 
 export {AssignmentStatement};

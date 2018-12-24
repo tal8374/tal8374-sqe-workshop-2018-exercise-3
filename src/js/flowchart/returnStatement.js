@@ -26,13 +26,17 @@ ReturnStatement.prototype.getID = function () {
 };
 
 ReturnStatement.prototype.updateNextNode = function () {
-    if(!this.wrapper) return;
+    if(!this.wrapper || !this.wrapper.getNextNode) return;
 
     let nextNode = this.wrapper.getNextNode(this.payload.flowchart.id);
 
     if(!nextNode) return;
 
     this.payload.flowchart.nextNode = nextNode;
+};
+
+ReturnStatement.prototype.createNodeDeclarationCode = function (nodeDeclarationCode) {
+    nodeDeclarationCode.push(this.payload.flowchart.data);
 };
 
 export {ReturnStatement};

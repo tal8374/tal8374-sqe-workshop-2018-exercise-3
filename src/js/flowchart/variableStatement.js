@@ -14,7 +14,7 @@ VariableStatement.prototype.createID = function () {
 };
 
 VariableStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=> operation:' + this.getOperation();
+    this.payload.flowchart.data = this.getID() + '=>operation: ' + this.getOperation();
 };
 
 VariableStatement.prototype.getOperation = function () {
@@ -26,13 +26,25 @@ VariableStatement.prototype.getID = function () {
 };
 
 VariableStatement.prototype.updateNextNode = function () {
-    if(!this.wrapper) return;
+    if(!this.wrapper || !this.wrapper.getNextNode) return;
 
     let nextNode = this.wrapper.getNextNode(this.payload.flowchart.id);
 
     if(!nextNode) return;
 
     this.payload.flowchart.nextNode = nextNode;
+};
+
+VariableStatement.prototype.createNodeDeclarationCode = function (nodeDeclarationCode) {
+    nodeDeclarationCode.push(this.payload.flowchart.data);
+};
+
+VariableStatement.prototype.createNodeNextCode = function (nodeDeclarationCode) {
+    if(!this.payload.flowchart.nextNode) return;
+
+    let nextNodeData = this.payload.flowchart.id + '->' + this.payload.flowchart.nextNode;
+
+    nodeDeclarationCode.push(nextNodeData);
 };
 
 export {VariableStatement};
