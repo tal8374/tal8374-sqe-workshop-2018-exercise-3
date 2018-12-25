@@ -5,6 +5,7 @@ function ReturnStatement(wrapper, payload) {
     this.payload = payload;
 }
 
+
 ReturnStatement.prototype.createID = function () {
     if (!this.payload.flowchart) {
         this.payload.flowchart = {};
@@ -18,7 +19,7 @@ ReturnStatement.prototype.declareNode = function () {
 };
 
 ReturnStatement.prototype.getOperation = function () {
-    return 'return ' + this.payload.value;
+    return 'return' + this.payload.value;
 };
 
 ReturnStatement.prototype.getID = function () {
@@ -39,7 +40,16 @@ ReturnStatement.prototype.createNodeDeclarationCode = function (nodeDeclarationC
     nodeDeclarationCode.push(this.payload.flowchart.data);
 };
 
+ReturnStatement.prototype.createNodeNextCode = function (nodeDeclarationCode) {
+    if(!this.payload.flowchart.nextNode) return;
+
+    let nextNodeData = this.payload.flowchart.id + '->' + this.payload.flowchart.nextNode;
+
+    nodeDeclarationCode.push(nextNodeData);
+};
+
 ReturnStatement.prototype.markNodeAsVisited = function () {
+    this.payload.flowchart.data += '|approved';
 };
 
 export {ReturnStatement};
