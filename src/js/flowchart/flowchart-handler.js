@@ -4,6 +4,7 @@ import {ReturnStatement} from './returnStatement';
 import {IfStatement} from './ifStatement';
 import {VariableStatement} from './variableStatement';
 import {AssignmentStatement} from './assignmentStatement';
+import {Nulltatement} from './nullStatement';
 
 function FlowchartHandler(payload, wrapper) {
     this.payload = payload;
@@ -17,6 +18,7 @@ FlowchartHandler.prototype.handlers = {
     'IfStatement': IfStatement,
     'else if statement': ElseIfStatement,
     'ReturnStatement': ReturnStatement,
+    'nullNode': Nulltatement,
 };
 
 FlowchartHandler.prototype.markNodeAsVisited = function () {
@@ -31,7 +33,7 @@ FlowchartHandler.prototype.markNodeAsVisited = function () {
             if (isEnteredToIfStatement) {
                 continue;
             }
-            if(payload.style.backgroundColor === '#7FFF00') {
+            if (payload.style.backgroundColor === '#7FFF00') {
                 isEnteredToIfStatement = true;
             }
         } else {
@@ -40,6 +42,50 @@ FlowchartHandler.prototype.markNodeAsVisited = function () {
 
         let flowchart = new this.handlers[codeType](this.wrapper, payload);
         flowchart.markNodeAsVisited();
+    }
+};
+
+// function addNullNodeWhileStatement(payloads, index, nullNodePayload) {
+//
+//     arr.splice(index, 0, nullNodePayload);
+// }
+//
+// function addNullNodeIfStatement(payloads, index, nullNodePayload) {
+//
+// }
+//
+// function addNullNodeElseIfStatement(payloads, index) {
+//
+// }
+//
+// FlowchartHandler.prototype.addNullNodeHandlers = {
+//     'WhileStatement': addNullNodeWhileStatement,
+//     'IfStatement': addNullNodeIfStatement,
+//     'else if statement': addNullNodeElseIfStatement,
+// };
+
+FlowchartHandler.prototype.addNullNode = function () {
+    for (let i = 0; i < this.payload.length; i++) {
+        let payload = this.payload[i];
+        let codeType = payload.type;
+
+        let shouldHandle = ['WhileStatement', 'IfStatement', 'else if statement'];
+
+        if (!shouldHandle.includes(codeType)) continue;
+
+        let nullNodePayload = {
+            type: 'nullNode',
+            value: 'NULL'
+        };
+
+        if (codeType === 'WhileStatement') {
+            this.payload.splice(i, 0, nullNodePayload);
+        }
+
+        let flowchart = new FlowchartHandler(payload.body, this);
+        flowchart.addNullNode();
+
+        i++;
     }
 };
 
@@ -110,11 +156,7 @@ function lineStatementGetNextNodeHandler(nodeID, payload) {
 function WhileStatementGetNextNodeHandler(nodeID, payload) {
     for (let i = 0; i < payload.length - 1; i++) {
         if (payload[i].flowchart.id === nodeID) {
-            for (let j = i + 1; j < payload.length; j++) {
-                if (payload[j].type !== 'else if statement') {
-                    return payload[j].flowchart.id;
-                }
-            }
+            return payload[i - 1].flowchart.id;
         }
     }
 }

@@ -85,7 +85,8 @@ WhileStatement.prototype.getNextNode = function (nodeID) {
         }
     }
 
-    return this.getID();
+    return this.wrapper.getNextEndNode(this.payload.flowchart.id, this.payload.type);
+    // return this.getID();
 };
 
 WhileStatement.prototype.getNextEndNode = function (nodeID, nodeType) {
