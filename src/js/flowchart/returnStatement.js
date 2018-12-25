@@ -14,7 +14,7 @@ ReturnStatement.prototype.createID = function () {
 };
 
 ReturnStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=> operation:' + this.getOperation();
+    this.payload.flowchart.data = this.getID() + '=>operation: ' + this.getOperation();
 };
 
 ReturnStatement.prototype.getOperation = function () {
@@ -37,6 +37,9 @@ ReturnStatement.prototype.updateNextNode = function () {
 
 ReturnStatement.prototype.createNodeDeclarationCode = function (nodeDeclarationCode) {
     nodeDeclarationCode.push(this.payload.flowchart.data);
+};
+
+ReturnStatement.prototype.markNodeAsVisited = function () {
 };
 
 export {ReturnStatement};

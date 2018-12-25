@@ -132,4 +132,7 @@ WhileStatement.prototype.createNodeNextCodeForBody = function (nodeDeclarationCo
     flowchart.createNodeNextCode(nodeDeclarationCode);
 };
 
+WhileStatement.prototype.markNodeAsVisited = function () {
+};
+
 export {WhileStatement};

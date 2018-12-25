@@ -19,6 +19,30 @@ FlowchartHandler.prototype.handlers = {
     'ReturnStatement': ReturnStatement,
 };
 
+FlowchartHandler.prototype.markNodeAsVisited = function () {
+    let isEnteredToIfStatement = false;
+
+    for (let i = 0; i < this.payload.length; i++) {
+        let payload = this.payload[i];
+        let codeType = payload.type;
+        if (!this.handlers[codeType]) continue;
+
+        if (codeType === 'IfStatement' || codeType === 'else if statement') {
+            if (isEnteredToIfStatement) {
+                continue;
+            }
+            if(payload.style.backgroundColor === '#7FFF00') {
+                isEnteredToIfStatement = true;
+            }
+        } else {
+            isEnteredToIfStatement = false;
+        }
+
+        let flowchart = new this.handlers[codeType](this.wrapper, payload);
+        flowchart.markNodeAsVisited();
+    }
+};
+
 FlowchartHandler.prototype.createID = function () {
     for (let i = 0; i < this.payload.length; i++) {
         let payload = this.payload[i];
@@ -133,9 +157,9 @@ FlowchartHandler.prototype.getNextNode = function (nodeID) {
     for (let i = 0; i < this.payload.length - 1; i++) {
         if (this.payload[i].flowchart.id === nodeID) {
             if (this.payload[i + 1].type === 'else if statement' && !this.payload[i + 1].declaration) {
-                if(this.payload[i + 1].body.length > 0) {
+                if (this.payload[i + 1].body.length > 0) {
                     return this.payload[i + 1].body[0].flowchart.id;
-                } else if(i + 2 < this.payload.length) {
+                } else if (i + 2 < this.payload.length) {
                     return this.payload[i + 2].flowchart.id;
                 }
             } else {

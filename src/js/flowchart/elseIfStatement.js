@@ -148,5 +148,14 @@ ElseIfStatement.prototype.createNodeNextCodeForBody = function (nodeDeclarationC
     flowchart.createNodeNextCode(nodeDeclarationCode);
 };
 
+ElseIfStatement.prototype.markNodeAsVisited = function () {
+    this.payload.flowchart.data += '|approved';
+
+    if (this.payload.style.backgroundColor === '#7FFF00') {
+        let flowchart = new FlowchartHandler(this.payload.body, this);
+        flowchart.markNodeAsVisited();
+    }
+};
+
 
 export {ElseIfStatement};

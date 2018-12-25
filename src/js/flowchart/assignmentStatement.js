@@ -26,7 +26,6 @@ AssignmentStatement.prototype.getID = function () {
 };
 
 AssignmentStatement.prototype.updateNextNode = function () {
-    console.log(this.wrapper)
     if(!this.wrapper || !this.wrapper.getNextNode) return;
 
     let nextNode = this.wrapper.getNextNode(this.payload.flowchart.id);
@@ -46,6 +45,10 @@ AssignmentStatement.prototype.createNodeNextCode = function (nodeDeclarationCode
     let nextNodeData = this.payload.flowchart.id + '->' + this.payload.flowchart.nextNode;
 
     nodeDeclarationCode.push(nextNodeData);
+};
+
+AssignmentStatement.prototype.markNodeAsVisited = function () {
+    this.payload.flowchart.data += '|approved';
 };
 
 
