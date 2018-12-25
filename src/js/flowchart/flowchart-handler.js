@@ -4,7 +4,8 @@ import {ReturnStatement} from './returnStatement';
 import {IfStatement} from './ifStatement';
 import {VariableStatement} from './variableStatement';
 import {AssignmentStatement} from './assignmentStatement';
-import {Nulltatement} from './nullStatement';
+import {NullStatement} from './nullStatement';
+import {EmptyStatement} from './emptyStatement';
 
 function FlowchartHandler(payload, wrapper) {
     this.payload = payload;
@@ -18,7 +19,8 @@ FlowchartHandler.prototype.handlers = {
     'IfStatement': IfStatement,
     'else if statement': ElseIfStatement,
     'ReturnStatement': ReturnStatement,
-    'nullNode': Nulltatement,
+    'nullNode': NullStatement,
+    'emptyNode': EmptyStatement,
 };
 
 FlowchartHandler.prototype.markNodeAsVisited = function () {
@@ -45,25 +47,6 @@ FlowchartHandler.prototype.markNodeAsVisited = function () {
     }
 };
 
-// function addNullNodeWhileStatement(payloads, index, nullNodePayload) {
-//
-//     arr.splice(index, 0, nullNodePayload);
-// }
-//
-// function addNullNodeIfStatement(payloads, index, nullNodePayload) {
-//
-// }
-//
-// function addNullNodeElseIfStatement(payloads, index) {
-//
-// }
-//
-// FlowchartHandler.prototype.addNullNodeHandlers = {
-//     'WhileStatement': addNullNodeWhileStatement,
-//     'IfStatement': addNullNodeIfStatement,
-//     'else if statement': addNullNodeElseIfStatement,
-// };
-
 FlowchartHandler.prototype.addNullNode = function () {
     for (let i = 0; i < this.payload.length; i++) {
         let payload = this.payload[i];
@@ -86,6 +69,33 @@ FlowchartHandler.prototype.addNullNode = function () {
         flowchart.addNullNode();
 
         i++;
+    }
+};
+
+FlowchartHandler.prototype.addEmptyNode = function () {
+    for (let i = 1; i < this.payload.length; i++) {
+        let payload = this.payload[i];
+        let codeType = payload.type;
+
+        let shouldHandle = ['WhileStatement', 'IfStatement', 'else if statement'];
+
+        if (shouldHandle.includes(codeType)){
+            let flowchart = new FlowchartHandler(payload.body, this);
+            flowchart.addNullNode();
+        }
+
+        let emptyNodePayload = {
+            type: 'emptyNode',
+            value: '.'
+        };
+
+        if (codeType !== 'IfStatement' && codeType !== 'else if statement') {
+            if (this.payload[i - 1].type === 'IfStatement' || this.payload[i - 1].type === 'else if statement') {
+                this.payload.splice(i, 0, emptyNodePayload);
+                i++;
+            }
+
+        }
     }
 };
 
@@ -161,11 +171,11 @@ function WhileStatementGetNextNodeHandler(nodeID, payload) {
     }
 }
 
-function IfStatementGetNextNodeHandler(nodeID, payload) {
+function IfStatementGetNextNodeHandler(nodeID, payload, wrapper) {
     for (let i = 0; i < payload.length - 1; i++) {
         if (payload[i].flowchart.id === nodeID) {
             for (let j = i + 1; j < payload.length; j++) {
-                if (payload[j].type !== 'else if statement') {
+                if (payload[j].type === 'emptyNode') {
                     return payload[j].flowchart.id;
                 }
             }
@@ -194,7 +204,6 @@ FlowchartHandler.prototype.getNextNodeHandlers = {
     'ReturnStatement': lineStatementGetNextNodeHandler,
 };
 
-
 FlowchartHandler.prototype.getNextNode = function (nodeID) {
     for (let i = 0; i < this.payload.length - 1; i++) {
         if (this.payload[i].flowchart.id === nodeID) {
@@ -214,7 +223,7 @@ FlowchartHandler.prototype.getNextNode = function (nodeID) {
 FlowchartHandler.prototype.getNextEndNode = function (nodeID, nodeType) {
     if (!this.getNextNodeHandlers[nodeType]) return;
 
-    return this.getNextNodeHandlers[nodeType](nodeID, this.payload);
+    return this.getNextNodeHandlers[nodeType](nodeID, this.payload, this.wrapper);
 };
 
 export {FlowchartHandler};

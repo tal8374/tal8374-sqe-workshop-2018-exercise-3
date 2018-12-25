@@ -86,11 +86,10 @@ WhileStatement.prototype.getNextNode = function (nodeID) {
     }
 
     return this.wrapper.getNextEndNode(this.payload.flowchart.id, this.payload.type);
-    // return this.getID();
 };
 
-WhileStatement.prototype.getNextEndNode = function (nodeID, nodeType) {
-    return this.wrapper.getNextEndNode(nodeID, nodeType);
+WhileStatement.prototype.getNextEndNode = function (nodeID) {
+    return this.getNextNode(nodeID);
 };
 
 WhileStatement.prototype.createNodeDeclarationCode = function (nodeDeclarationCode) {

@@ -78,6 +78,7 @@ IfStatement.prototype.updateNextNodeForBody = function () {
 IfStatement.prototype.getNextNode = function (nodeID) {
     let body = this.payload.body;
 
+
     for (let i = 0; i < body.length - 1; i++) {
         if (body[i].flowchart.id === nodeID) {
             return body[i + 1].flowchart.id;
@@ -87,8 +88,9 @@ IfStatement.prototype.getNextNode = function (nodeID) {
     return this.wrapper.getNextEndNode(this.payload.flowchart.id, this.payload.type);
 };
 
-IfStatement.prototype.getNextEndNode = function (nodeID, nodeType) {
-    return this.wrapper.getNextEndNode(nodeID, nodeType);
+
+IfStatement.prototype.getNextEndNode = function (nodeID) {
+    return this.getNextNode(nodeID);
 };
 
 IfStatement.prototype.createNodeDeclarationCode = function (nodeDeclarationCode) {

@@ -1,11 +1,11 @@
 import {guid} from '../utils/common';
 
-function NullStatement(wrapper, payload) {
+function EmptyStatement(wrapper, payload) {
     this.wrapper = wrapper;
     this.payload = payload;
 }
 
-NullStatement.prototype.createID = function () {
+EmptyStatement.prototype.createID = function () {
     if (!this.payload.flowchart) {
         this.payload.flowchart = {};
     }
@@ -13,19 +13,19 @@ NullStatement.prototype.createID = function () {
     this.payload.flowchart.id = guid();
 };
 
-NullStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=>operation: ' + this.getOperation();
+EmptyStatement.prototype.declareNode = function () {
+    this.payload.flowchart.data = this.getID() + '=>start: ' + this.getOperation();
 };
 
-NullStatement.prototype.getOperation = function () {
+EmptyStatement.prototype.getOperation = function () {
     return this.payload.value;
 };
 
-NullStatement.prototype.getID = function () {
+EmptyStatement.prototype.getID = function () {
     return this.payload.flowchart.id;
 };
 
-NullStatement.prototype.updateNextNode = function () {
+EmptyStatement.prototype.updateNextNode = function () {
     if(!this.wrapper || !this.wrapper.getNextNode) return;
 
     let nextNode = this.wrapper.getNextNode(this.payload.flowchart.id);
@@ -35,11 +35,11 @@ NullStatement.prototype.updateNextNode = function () {
     this.payload.flowchart.nextNode = nextNode;
 };
 
-NullStatement.prototype.createNodeDeclarationCode = function (nodeDeclarationCode) {
+EmptyStatement.prototype.createNodeDeclarationCode = function (nodeDeclarationCode) {
     nodeDeclarationCode.push(this.payload.flowchart.data);
 };
 
-NullStatement.prototype.createNodeNextCode = function (nodeDeclarationCode) {
+EmptyStatement.prototype.createNodeNextCode = function (nodeDeclarationCode) {
     if(!this.payload.flowchart.nextNode) return;
 
     let nextNodeData = this.payload.flowchart.id + '->' + this.payload.flowchart.nextNode;
@@ -47,8 +47,8 @@ NullStatement.prototype.createNodeNextCode = function (nodeDeclarationCode) {
     nodeDeclarationCode.push(nextNodeData);
 };
 
-NullStatement.prototype.markNodeAsVisited = function () {
+EmptyStatement.prototype.markNodeAsVisited = function () {
     this.payload.flowchart.data += '|approved';
 };
 
-export {NullStatement};
+export {EmptyStatement};

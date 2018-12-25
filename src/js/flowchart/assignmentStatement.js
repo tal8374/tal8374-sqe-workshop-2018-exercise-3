@@ -25,6 +25,7 @@ AssignmentStatement.prototype.getID = function () {
     return this.payload.flowchart.id;
 };
 
+
 AssignmentStatement.prototype.updateNextNode = function () {
     if(!this.wrapper || !this.wrapper.getNextNode) return;
 
