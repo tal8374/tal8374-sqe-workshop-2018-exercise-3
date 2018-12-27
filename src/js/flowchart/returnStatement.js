@@ -19,7 +19,7 @@ ReturnStatement.prototype.declareNode = function () {
 };
 
 ReturnStatement.prototype.getOperation = function () {
-    return 'return' + this.payload.value;
+    return 'return' + this.payload.originalValue;
 };
 
 ReturnStatement.prototype.getID = function () {

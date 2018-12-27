@@ -18,7 +18,7 @@ VariableStatement.prototype.declareNode = function () {
 };
 
 VariableStatement.prototype.getOperation = function () {
-    return 'let ' + this.payload.name + ' = ' + this.payload.value;
+    return 'let ' + this.payload.name + ' = ' + this.payload.originalValue;
 };
 
 VariableStatement.prototype.getID = function () {

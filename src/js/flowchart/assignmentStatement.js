@@ -18,7 +18,7 @@ AssignmentStatement.prototype.declareNode = function () {
 };
 
 AssignmentStatement.prototype.getOperation = function () {
-    return this.payload.name + ' = ' + this.payload.value;
+    return this.payload.name + ' = ' + this.payload.originalValue;
 };
 
 AssignmentStatement.prototype.getID = function () {

@@ -42,7 +42,7 @@ ElseIfStatement.prototype.isElseIfStatement = function () {
 };
 
 ElseIfStatement.prototype.getCondition = function () {
-    return this.payload.declaration.condition;
+    return this.payload.declaration.originalCondition;
 };
 
 ElseIfStatement.prototype.getID = function () {
