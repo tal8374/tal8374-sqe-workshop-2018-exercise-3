@@ -7,6 +7,7 @@ function replaceAll(str, search, replacement) {
 function updateLocalVariable(payload, localVariables, globalVariables, params) {
     let variableName = payload.name || '';
     let variableContent = payload.value || '';
+    payload.originalValue = variableContent;
 
     variableContent = doSymbolicSubstitutionTo(variableContent, variableName, localVariables, globalVariables, params);
     localVariables[variableName] = getVariableContent(variableContent);
