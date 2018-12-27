@@ -1,20 +1,19 @@
-import {guid} from '../utils/common';
-
 function NullStatement(wrapper, payload) {
     this.wrapper = wrapper;
     this.payload = payload;
 }
 
-NullStatement.prototype.createID = function () {
+NullStatement.prototype.createID = function (id) {
     if (!this.payload.flowchart) {
         this.payload.flowchart = {};
     }
 
-    this.payload.flowchart.id = guid();
+    this.payload.flowchart.id = id.id;
+    id.id++;
 };
 
 NullStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=>operation: ' + this.getOperation();
+    this.payload.flowchart.data = this.getID() + '=>operation: '+ '(' + this.getID() + ')\n' + this.getOperation();
 };
 
 NullStatement.prototype.getOperation = function () {

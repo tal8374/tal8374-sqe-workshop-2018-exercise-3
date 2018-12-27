@@ -6,32 +6,32 @@ function ElseIfStatement(wrapper, payload) {
     this.payload = payload;
 }
 
-ElseIfStatement.prototype.createID = function () {
+ElseIfStatement.prototype.createID = function (id) {
     if (!this.payload.flowchart) {
         this.payload.flowchart = {};
     }
 
-    this.payload.flowchart.id = guid();
+    this.payload.flowchart.id = id.id++;
 
-    this.createIDBody();
+    this.createIDBody(id);
 };
 
-ElseIfStatement.prototype.createIDBody = function () {
+ElseIfStatement.prototype.createIDBody = function (id) {
     let body = this.payload.body;
 
     for (let i = 0; i < body.length; i++) {
         let payload = body[i];
 
         let flowchart = new FlowchartHandler([payload], this);
-        flowchart.createID();
+        flowchart.createID(id);
     }
 };
 
 ElseIfStatement.prototype.declareNode = function () {
     if (this.isElseIfStatement()) {
-        this.payload.flowchart.data = this.getID() + '=>condition: ' + this.getCondition();
+        this.payload.flowchart.data = this.getID() + '=>condition: '+ '(' + this.getID() + ')\n' + this.getCondition();
     } else {
-        this.payload.flowchart.data = this.getID() + '=>condition: ' + 'Else';
+        this.payload.flowchart.data = this.getID() + '=>condition: '+ '(' + this.getID() + ')\n' + 'Else';
     }
 
     this.createNodeDeclarationOfBody();

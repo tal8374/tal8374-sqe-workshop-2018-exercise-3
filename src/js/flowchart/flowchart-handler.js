@@ -99,14 +99,14 @@ FlowchartHandler.prototype.addEmptyNode = function () {
     }
 };
 
-FlowchartHandler.prototype.createID = function () {
+FlowchartHandler.prototype.createID = function (id) {
     for (let i = 0; i < this.payload.length; i++) {
         let payload = this.payload[i];
         let codeType = payload.type;
         if (!this.handlers[codeType]) continue;
 
-        let flowchart = new this.handlers[codeType](this.wrapper, payload);
-        flowchart.createID();
+        let flowchart = new this.handlers[codeType](this.wrapper, payload, id);
+        flowchart.createID(id);
     }
 };
 

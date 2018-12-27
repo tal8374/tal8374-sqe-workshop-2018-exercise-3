@@ -1,34 +1,34 @@
 import {FlowchartHandler} from './flowchart-handler';
-import {guid} from '../utils/common';
 
 function IfStatement(wrapper, payload) {
     this.wrapper = wrapper;
     this.payload = payload;
 }
 
-IfStatement.prototype.createID = function () {
+IfStatement.prototype.createID = function (id) {
     if (!this.payload.flowchart) {
         this.payload.flowchart = {};
     }
 
-    this.payload.flowchart.id = guid();
+    this.payload.flowchart.id = id.id;
+    id.id++;
 
-    this.createIDBody();
+    this.createIDBody(id);
 };
 
-IfStatement.prototype.createIDBody = function () {
+IfStatement.prototype.createIDBody = function (id) {
     let body = this.payload.body;
 
     for (let i = 0; i < body.length; i++) {
         let payload = body[i];
 
-        let flowchart = new FlowchartHandler([payload], this);
-        flowchart.createID();
+        let flowchart = new FlowchartHandler([payload], this, id);
+        flowchart.createID(id);
     }
 };
 
 IfStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=>condition: ' + this.getCondition();
+    this.payload.flowchart.data = this.getID() + '=>condition: '+ '(' + this.getID() + ')\n' + this.getCondition();
 
     this.createNodeDeclarationOfBody();
 };

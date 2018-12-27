@@ -1,35 +1,34 @@
 import {FlowchartHandler} from './flowchart-handler';
-import {guid} from '../utils/common';
 
 function WhileStatement(wrapper, payload) {
     this.wrapper = wrapper;
     this.payload = payload;
 }
 
-
-WhileStatement.prototype.createID = function () {
+WhileStatement.prototype.createID = function (id) {
     if (!this.payload.flowchart) {
         this.payload.flowchart = {};
     }
 
-    this.payload.flowchart.id = guid();
+    this.payload.flowchart.id = id.id;
+    id.id++;
 
-    this.createIDBody();
+    this.createIDBody(id);
 };
 
-WhileStatement.prototype.createIDBody = function () {
+WhileStatement.prototype.createIDBody = function (id) {
     let body = this.payload.body;
 
     for (let i = 0; i < body.length; i++) {
         let payload = body[i];
 
         let flowchart = new FlowchartHandler([payload], this);
-        flowchart.createID();
+        flowchart.createID(id);
     }
 };
 
 WhileStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=>condition: ' + this.getCondition();
+    this.payload.flowchart.data = this.getID() + '=>condition: '+ '(' + this.getID() + ')\n' + this.getCondition();
 
     this.createNodeDeclarationOfBody();
 };
@@ -42,13 +41,13 @@ WhileStatement.prototype.getID = function () {
     return this.payload.flowchart.id;
 };
 
-WhileStatement.prototype.createNodeDeclarationOfBody = function () {
+WhileStatement.prototype.createNodeDeclarationOfBody = function (id) {
     let body = this.payload.body;
 
     for (let i = 0; i < body.length; i++) {
         let payload = body[i];
 
-        let flowchart = new FlowchartHandler([payload], this);
+        let flowchart = new FlowchartHandler([payload], this, id);
         flowchart.declareNode();
     }
 };
@@ -65,13 +64,13 @@ WhileStatement.prototype.updateNextNode = function () {
     this.payload.flowchart.nextNode = nextNode;
 };
 
-WhileStatement.prototype.updateNextNodeForBody = function () {
+WhileStatement.prototype.updateNextNodeForBody = function (id) {
     let body = this.payload.body;
 
     for (let i = 0; i < body.length; i++) {
         let payload = body[i];
 
-        let flowchart = new FlowchartHandler([payload], this);
+        let flowchart = new FlowchartHandler([payload], this, id);
         flowchart.updateNextNode();
     }
 };

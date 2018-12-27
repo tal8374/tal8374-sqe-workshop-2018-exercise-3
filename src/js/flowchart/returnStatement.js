@@ -1,21 +1,19 @@
-import {guid} from '../utils/common';
-
 function ReturnStatement(wrapper, payload) {
     this.wrapper = wrapper;
     this.payload = payload;
 }
 
-
-ReturnStatement.prototype.createID = function () {
+ReturnStatement.prototype.createID = function (id) {
     if (!this.payload.flowchart) {
         this.payload.flowchart = {};
     }
 
-    this.payload.flowchart.id = guid();
+    this.payload.flowchart.id = id.id;
+    id.id++;
 };
 
 ReturnStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=>operation: ' + this.getOperation();
+    this.payload.flowchart.data = this.getID() + '=>operation: '+ '(' + this.getID() + ')\n' + this.getOperation();
 };
 
 ReturnStatement.prototype.getOperation = function () {
