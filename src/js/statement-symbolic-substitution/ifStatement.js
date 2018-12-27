@@ -59,6 +59,7 @@ IfStatement.prototype.handleDeclaration = function () {
     let payload = {};
     payload.value = this.payload.declaration.condition;
     updateLocalVariable(payload, Object.assign({}, this.localVariables), this.getGlobalVariables(), this.getParams());
+    this.payload.declaration.originalCondition = this.payload.declaration.condition;
     this.payload.declaration.condition = payload.value;
 };
 
