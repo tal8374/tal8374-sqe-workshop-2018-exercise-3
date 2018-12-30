@@ -137,7 +137,6 @@ FlowchartHandler.prototype.updateNextNode = function () {
 };
 
 FlowchartHandler.prototype.createNodeDeclarationCode = function (nodeDeclarationCode) {
-    if (!nodeDeclarationCode) return;
     for (let i = 0; i < this.payload.length; i++) {
         let payload = this.payload[i];
         let codeType = payload.type;

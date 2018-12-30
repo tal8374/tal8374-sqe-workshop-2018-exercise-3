@@ -1,16 +1,14 @@
-import {guid} from '../utils/common';
-
 function EmptyStatement(wrapper, payload) {
     this.wrapper = wrapper;
     this.payload = payload;
 }
 
-EmptyStatement.prototype.createID = function () {
+EmptyStatement.prototype.createID = function (id) {
     if (!this.payload.flowchart) {
         this.payload.flowchart = {};
     }
 
-    this.payload.flowchart.id = guid();
+    this.payload.flowchart.id = id.id++;
 };
 
 EmptyStatement.prototype.declareNode = function () {

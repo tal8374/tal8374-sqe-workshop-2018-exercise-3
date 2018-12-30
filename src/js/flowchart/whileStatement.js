@@ -34,7 +34,7 @@ WhileStatement.prototype.declareNode = function () {
 };
 
 WhileStatement.prototype.getCondition = function () {
-    return this.payload.declaration.condition;
+    return this.payload.declaration.originalCondition;
 };
 
 WhileStatement.prototype.getID = function () {

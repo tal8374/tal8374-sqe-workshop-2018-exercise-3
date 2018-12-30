@@ -12,7 +12,7 @@ describe('The common function', () => {
 
         assert.equal(
             JSON.stringify(payload),
-            '{"type":"VariableDeclarator","name":"b","value":"x  + 1 + y","lineNumber":4}'
+            '{"type":"VariableDeclarator","name":"b","value":"x  + 1 + y","lineNumber":4,"originalValue":"a+y"}'
         );
     });
 
@@ -26,7 +26,7 @@ describe('The common function', () => {
 
         assert.equal(
             JSON.stringify(payload),
-            '{"type":"AssignmentExpression","name":"x","value":"x + 2","lineNumber":2}'
+            '{"type":"AssignmentExpression","name":"x","value":"x + 2","lineNumber":2,"originalValue":"x+2"}'
         );
     });
 });

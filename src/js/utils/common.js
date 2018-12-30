@@ -120,10 +120,6 @@ function checkCondition(condition) {
 
     condition = '' + condition;
 
-    if (condition.includes('[')) {
-        condition = evalBetweenParenthesis(condition);
-    }
-
     try {
         return eval(condition);
 
@@ -134,46 +130,5 @@ function checkCondition(condition) {
     }
 }
 
-function evalBetweenParenthesis(condition) {
-    let newCondition = '';
-    while (condition !== '') {
-        let conditionPayload = getConditionPayload(condition);
 
-        if (conditionPayload.between.includes(',')) {
-            newCondition += conditionPayload.before + '[' + conditionPayload.between + ']';
-            condition = conditionPayload.after;
-            continue;
-        }
-        newCondition += conditionPayload.before + '[' + Math.floor(eval(conditionPayload.between)) + ']';
-        condition = conditionPayload.after;
-        if (!conditionPayload.after.includes('[')) {
-            newCondition += conditionPayload.after;
-            break;
-        }
-    }
-    return newCondition;
-}
-
-
-function getConditionPayload(condition) {
-    let indexOpening = condition.indexOf('[');
-    let indexClosing = condition.indexOf(']');
-
-    let before = condition.substring(0, indexOpening);
-    let between = condition.substring(indexOpening + 1, indexClosing);
-    let after = condition.substring(indexClosing + 1, condition.length);
-
-    return {before: before, between: between, after: after};
-}
-
-function guid() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-}
-
-
-export {replaceAll, updateLocalVariable, getGlobalVariables, colorCondition, guid};
+export {replaceAll, updateLocalVariable, getGlobalVariables, colorCondition};

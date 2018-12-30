@@ -14,71 +14,8 @@
 
 <div id="diagram"></div>
 <script src="flowchart.js"></script>
-<script>
-    var diagram = flowchart.parse(
-        'st=>start: Start\n' +
-        'e=>end: End|future\n' +
-        'op1=>operation: My Operation 1\n' +
-        'op2=>operation: My Operation 2\n' +
-        'sub1=>operation: My Sub 1\n' +
-        'cond=>condition: Yes or No?|approved\n' +
-        'c2=>condition: Good idea|approved\n' +
-        'io=>operation: My io\n' +
-        '\n' +
-        'st->op1\n' +
-        'op1->cond\n' +
-        'cond(yes)->c2\n' +
-        'cond(no)->sub1\n' +
-        'sub1->e\n' +
-        'c2(yes)->io\n' +
-        'io->e\n' +
-        'c2(no)->op2\n' +
-        'op2->e'  //allow for true and false in conditionals
-    );
-    diagram.drawSVG('diagram');
 
-    // you can also try to pass options:
-
-    diagram.drawSVG('diagram', {
-        'x': 0,
-        'y': 0,
-        'line-width': 3,
-        'line-length': 50,
-        'text-margin': 10,
-        'font-size': 14,
-        'font-color': 'black',
-        'line-color': 'black',
-        'element-color': 'black',
-        'fill': 'white',
-        'yes-text': 'yes',
-        'no-text': 'no',
-        'arrow-end': 'block',
-        'scale': 1,
-        // style symbol types
-        'symbols': {
-            'start': {
-                'font-color': 'red',
-                'element-color': 'green',
-                'fill': 'yellow'
-            },
-            'end':{
-                'class': 'end-element'
-            }
-        },
-        // even flowstate support ;-)
-        'flowstate' : {
-            'past' : { 'fill' : '#CCCCCC', 'font-size' : 12},
-            'current' : {'fill' : 'yellow', 'font-color' : 'red', 'font-weight' : 'bold'},
-            'future' : { 'fill' : '#FFFF99'},
-            'request' : { 'fill' : 'blue'},
-            'invalid': {'fill' : '#444444'},
-            'approved' : { 'fill' : '#58C4A3', 'font-size' : 12 },
-            'rejected' : { 'fill' : '#C45879', 'font-size' : 12 }
-        }
-    });
-</script>
-
-<button id="button">Do substitution</button>
+<button id="button">Draw flow</button>
 <!--<button onclick="myFunction()">Try it</button>-->
 <br>
 <table id="myTable">
