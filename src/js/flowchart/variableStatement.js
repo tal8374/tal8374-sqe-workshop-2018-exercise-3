@@ -46,7 +46,9 @@ VariableStatement.prototype.createNodeNextCode = function (nodeDeclarationCode) 
     nodeDeclarationCode.push(nextNodeData);
 };
 
-VariableStatement.prototype.markNodeAsVisited = function () {
+VariableStatement.prototype.markNodeAsVisited = function (isFunctionDone) {
+    if(isFunctionDone.isFunctionDone) return;
+
     this.payload.flowchart.data += '|approved';
 };
 

@@ -28,7 +28,7 @@ $(document).ready(function () {
         flowchartInstance.addEmptyNode();
         flowchartInstance.createID({id: 1});
         flowchartInstance.declareNode();
-        flowchartInstance.markNodeAsVisited();
+        flowchartInstance.markNodeAsVisited({isFunctionDone: false});
         flowchartInstance.updateNextNode();
         let flowchartData = [];
         flowchartInstance.createNodeDeclarationCode(flowchartData);

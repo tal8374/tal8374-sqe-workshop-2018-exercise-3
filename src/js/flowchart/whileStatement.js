@@ -131,12 +131,14 @@ WhileStatement.prototype.createNodeNextCodeForBody = function (nodeDeclarationCo
     flowchart.createNodeNextCode(nodeDeclarationCode);
 };
 
-WhileStatement.prototype.markNodeAsVisited = function () {
+WhileStatement.prototype.markNodeAsVisited = function (isFunctionDone) {
+    if(isFunctionDone.isFunctionDone) return;
+
     this.payload.flowchart.data += '|approved';
 
     if (this.payload.style.backgroundColor === '#7FFF00') {
         let flowchart = new FlowchartHandler(this.payload.body, this);
-        flowchart.markNodeAsVisited();
+        flowchart.markNodeAsVisited(isFunctionDone);
     }
 };
 

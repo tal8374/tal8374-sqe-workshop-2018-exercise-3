@@ -23,7 +23,9 @@ FlowchartHandler.prototype.handlers = {
     'emptyNode': EmptyStatement,
 };
 
-FlowchartHandler.prototype.markNodeAsVisited = function () {
+FlowchartHandler.prototype.markNodeAsVisited = function (isFunctionDone) {
+    if(isFunctionDone.isFunctionDone) return;
+
     let isEnteredToIfStatement = false;
 
     for (let i = 0; i < this.payload.length; i++) {
@@ -43,7 +45,7 @@ FlowchartHandler.prototype.markNodeAsVisited = function () {
         }
 
         let flowchart = new this.handlers[codeType](this.wrapper, payload);
-        flowchart.markNodeAsVisited();
+        flowchart.markNodeAsVisited(isFunctionDone);
     }
 };
 

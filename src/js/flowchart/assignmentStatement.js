@@ -47,7 +47,9 @@ AssignmentStatement.prototype.createNodeNextCode = function (nodeDeclarationCode
     nodeDeclarationCode.push(nextNodeData);
 };
 
-AssignmentStatement.prototype.markNodeAsVisited = function () {
+AssignmentStatement.prototype.markNodeAsVisited = function (isFunctionDone) {
+    if(isFunctionDone.isFunctionDone) return;
+
     this.payload.flowchart.data += '|approved';
 };
 

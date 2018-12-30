@@ -17,7 +17,7 @@ ReturnStatement.prototype.declareNode = function () {
 };
 
 ReturnStatement.prototype.getOperation = function () {
-    return 'return' + this.payload.originalValue;
+    return 'return ' + this.payload.originalValue;
 };
 
 ReturnStatement.prototype.getID = function () {
@@ -46,8 +46,12 @@ ReturnStatement.prototype.createNodeNextCode = function (nodeDeclarationCode) {
     nodeDeclarationCode.push(nextNodeData);
 };
 
-ReturnStatement.prototype.markNodeAsVisited = function () {
+ReturnStatement.prototype.markNodeAsVisited = function (isFunctionDone) {
+    if(isFunctionDone.isFunctionDone) return;
+
     this.payload.flowchart.data += '|approved';
+
+    isFunctionDone.isFunctionDone = true;
 };
 
 export {ReturnStatement};

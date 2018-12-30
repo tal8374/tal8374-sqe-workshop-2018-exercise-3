@@ -46,7 +46,9 @@ NullStatement.prototype.createNodeNextCode = function (nodeDeclarationCode) {
     nodeDeclarationCode.push(nextNodeData);
 };
 
-NullStatement.prototype.markNodeAsVisited = function () {
+NullStatement.prototype.markNodeAsVisited = function (isFunctionDone) {
+    if(isFunctionDone.isFunctionDone) return;
+
     this.payload.flowchart.data += '|approved';
 };
 
