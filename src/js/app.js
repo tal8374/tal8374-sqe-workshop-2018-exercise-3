@@ -5,6 +5,7 @@ import {facadeDeclaration} from './statement-payload/facade-declaration-handler'
 import {SymbolicSubstitutionHandler} from './statement-symbolic-substitution/symbolic-substitution-handler';
 import {ColorHandler} from './color-condition/color-handler';
 import {FlowchartHandler} from './flowchart/flowchart-handler';
+import * as flowchart from 'flowchart.js';
 
 $(document).ready(function () {
 
@@ -17,11 +18,66 @@ $(document).ready(function () {
 
         colorCondition(payloads, inputCodeSplitted);
 
+        if (payloads[0].type === 'FunctionDeclaration') {
+            payloads = payloads[0].body;
+        }
         console.log(payloads)
 
-        let flowchar = new FlowchartHandler(payloads);
-        flowchar.createID();
+        let flowchartInstance = new FlowchartHandler(payloads);
+        flowchartInstance.addNullNode();
+        flowchartInstance.addEmptyNode();
+        flowchartInstance.createID({id: 1});
+        flowchartInstance.declareNode();
+        flowchartInstance.markNodeAsVisited();
+        flowchartInstance.updateNextNode();
+        let flowchartData = [];
+        flowchartInstance.createNodeDeclarationCode(flowchartData);
+        flowchartInstance.createNodeNextCode(flowchartData);
 
+        var diagram = flowchart.parse(
+            flowchartData.join('\n')
+        );
+        diagram.drawSVG('diagram');
+
+        // you can also try to pass options:
+
+        diagram.drawSVG('diagram', {
+            'x': 0,
+            'y': 0,
+            'line-width': 3,
+            'line-length': 50,
+            'text-margin': 10,
+            'font-size': 14,
+            'font-color': 'black',
+            'line-color': 'black',
+            'element-color': 'black',
+            'fill': 'white',
+            'yes-text': 'T',
+            'no-text': 'F',
+            'arrow-end': 'block',
+            'scale': 1,
+            // style symbol types
+            'symbols': {
+                'start': {
+                    'font-color': 'red',
+                    'element-color': 'green',
+                    'fill': 'yellow'
+                },
+                'end': {
+                    'class': 'end-element'
+                }
+            },
+            // even flowstate support ;-)
+            'flowstate': {
+                'past': {'fill': '#CCCCCC', 'font-size': 12},
+                'current': {'fill': 'yellow', 'font-color': 'red', 'font-weight': 'bold'},
+                'future': {'fill': '#FFFF99'},
+                'request': {'fill': 'blue'},
+                'invalid': {'fill': '#444444'},
+                'approved': {'fill': '#58C4A3', 'font-size': 12, 'border-radius': 25},
+                'rejected': {'fill': '#C45879', 'font-size': 12}
+            }
+        });
     });
 
 });
@@ -40,12 +96,6 @@ function doSymbolicSubstitution(payloads) {
     symbolicSubstitution.doSymbolicSubstitution();
 }
 
-function createCode(payloads) {
-    let codeCreatorHandler = new CodeHandler(payloads);
-    codeCreatorHandler.createCode();
-    return codeCreatorHandler.getCode();
-}
-
 function colorCondition(payloads, input) {
     let colorCode = new ColorHandler(payloads, null, input);
     colorCode.colorCode();
@@ -56,23 +106,6 @@ function parseInput(input) {
     input = '[' + input + ']';
 
     return eval(input);
-}
-
-function printCode(code) {
-    let codeWrapper = document.getElementById('codeWrapper');
-
-    code.forEach(function (codeStatement) {
-        var div = document.createElement('div');
-
-        div.innerText = codeStatement.text;
-
-        if (codeStatement.style) {
-            div.style.marginLeft = codeStatement.style.marginLeft;
-            div.style.backgroundColor = codeStatement.style.backgroundColor;
-        }
-
-        codeWrapper.appendChild(div);
-    });
 }
 
 

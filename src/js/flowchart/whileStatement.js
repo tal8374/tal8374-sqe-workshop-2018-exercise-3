@@ -80,7 +80,6 @@ WhileStatement.prototype.getNextNode = function (nodeID) {
 
     for (let i = 0; i < body.length - 1; i++) {
         if (body[i].flowchart.id === nodeID) {
-            console.log(body[i] )
             return body[i + 1].flowchart.id;
         }
     }
@@ -133,6 +132,12 @@ WhileStatement.prototype.createNodeNextCodeForBody = function (nodeDeclarationCo
 };
 
 WhileStatement.prototype.markNodeAsVisited = function () {
+    this.payload.flowchart.data += '|approved';
+
+    if (this.payload.style.backgroundColor === '#7FFF00') {
+        let flowchart = new FlowchartHandler(this.payload.body, this);
+        flowchart.markNodeAsVisited();
+    }
 };
 
 export {WhileStatement};

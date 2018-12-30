@@ -34,7 +34,6 @@ IfStatement.prototype.declareNode = function () {
 };
 
 IfStatement.prototype.getCondition = function () {
-    console.log(this.payload)
     return this.payload.declaration.originalCondition;
 };
 
