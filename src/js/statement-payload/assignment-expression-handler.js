@@ -53,7 +53,7 @@ AssignmentExpression.prototype.parseAssignmentExpressionHandler = function (expr
 
 AssignmentExpression.prototype.getName = function (expression) {
     if(expression.operator === '++') {
-        return expression.name + '++';
+        return expression.argument.name + '++';
     }
     return expression.left.name ? expression.left.name : expression.left.property.name;
 };

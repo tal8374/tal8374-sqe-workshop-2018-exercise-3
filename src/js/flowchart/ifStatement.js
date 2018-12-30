@@ -28,13 +28,13 @@ IfStatement.prototype.createIDBody = function (id) {
 };
 
 IfStatement.prototype.declareNode = function () {
-    this.payload.flowchart.data = this.getID() + '=>condition: '+ '(' + this.getID() + ')\n' + this.getCondition();
+    this.payload.flowchart.data = this.getID() + '=>condition: ' + '(' + this.getID() + ')\n' + this.getCondition();
 
     this.createNodeDeclarationOfBody();
 };
 
 IfStatement.prototype.getCondition = function () {
-    return this.payload.declaration.originalCondition;
+    return this.payload.declaration.originalCondition ? this.payload.declaration.originalCondition : 'false';
 };
 
 IfStatement.prototype.getID = function () {
@@ -134,11 +134,14 @@ IfStatement.prototype.createNodeNextCodeForBody = function (nodeDeclarationCode)
 };
 
 IfStatement.prototype.markNodeAsVisited = function (isFunctionDone) {
-    if(isFunctionDone.isFunctionDone) return;
+    isFunctionDone.isEnteredIfStatement = false;
+
+    if (isFunctionDone.isFunctionDone) return;
 
     this.payload.flowchart.data += '|approved';
 
     if (this.payload.style.backgroundColor === '#7FFF00') {
+        isFunctionDone.isEnteredIfStatement = true;
         let flowchart = new FlowchartHandler(this.payload.body, this);
         flowchart.markNodeAsVisited(isFunctionDone);
     }

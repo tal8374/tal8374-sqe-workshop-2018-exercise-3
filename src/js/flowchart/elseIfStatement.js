@@ -1,4 +1,3 @@
-import {guid} from '../utils/common';
 import {FlowchartHandler} from './flowchart-handler';
 
 function ElseIfStatement(wrapper, payload) {
@@ -29,9 +28,9 @@ ElseIfStatement.prototype.createIDBody = function (id) {
 
 ElseIfStatement.prototype.declareNode = function () {
     if (this.isElseIfStatement()) {
-        this.payload.flowchart.data = this.getID() + '=>condition: '+ '(' + this.getID() + ')\n' + this.getCondition();
+        this.payload.flowchart.data = this.getID() + '=>condition: ' + '(' + this.getID() + ')\n' + this.getCondition();
     } else {
-        this.payload.flowchart.data = this.getID() + '=>condition: '+ '(' + this.getID() + ')\n' + 'Else';
+        this.payload.flowchart.data = this.getID() + '=>condition: ' + '(' + this.getID() + ')\n' + 'Else';
     }
 
     this.createNodeDeclarationOfBody();
@@ -42,7 +41,7 @@ ElseIfStatement.prototype.isElseIfStatement = function () {
 };
 
 ElseIfStatement.prototype.getCondition = function () {
-    return this.payload.declaration.originalCondition;
+    return this.payload.declaration.originalCondition ? this.payload.declaration.originalCondition : 'false';
 };
 
 ElseIfStatement.prototype.getID = function () {
@@ -58,10 +57,6 @@ ElseIfStatement.prototype.createNodeDeclarationOfBody = function () {
         let flowchart = new FlowchartHandler([payload], this);
         flowchart.declareNode();
     }
-
-    if (!this.isElseIfStatement()) {
-    }
-
 };
 
 ElseIfStatement.prototype.updateNextNode = function () {
@@ -121,21 +116,14 @@ ElseIfStatement.prototype.createBodyNodeDeclaration = function (nodeDeclarationC
 };
 
 ElseIfStatement.prototype.createNodeNextCode = function (nodeDeclarationCode) {
-    if (this.payload.flowchart.nextNode) {
-        let nextNodeData;
-        if (this.isElseIfStatement()) {
-            nextNodeData = this.payload.flowchart.id + '(no)->' + this.payload.flowchart.nextNode;
-        } else {
-            nextNodeData = this.payload.flowchart.id + '(no)->' + this.payload.flowchart.nextNode
-            // nextNodeData = null;
-        }
+    this.handleNextNode(nodeDeclarationCode);
 
-        if (nextNodeData) {
-            nodeDeclarationCode.push(nextNodeData);
-        }
+    this.handleNextNodeBody(nodeDeclarationCode);
 
-    }
+    this.createNodeNextCodeForBody(nodeDeclarationCode);
+};
 
+ElseIfStatement.prototype.handleNextNodeBody = function (nodeDeclarationCode) {
     if (this.payload.body.length > 0) {
         let nextNodeData = this.payload.flowchart.id + '(yes)->' + this.payload.body[0].flowchart.id;
 
@@ -144,8 +132,21 @@ ElseIfStatement.prototype.createNodeNextCode = function (nodeDeclarationCode) {
             nodeDeclarationCode.push(nextNodeData);
         }
     }
+};
 
-    this.createNodeNextCodeForBody(nodeDeclarationCode);
+ElseIfStatement.prototype.handleNextNode = function (nodeDeclarationCode) {
+    if (!this.payload.flowchart.nextNode) return;
+
+    let nextNodeData;
+    if (this.isElseIfStatement()) {
+        nextNodeData = this.payload.flowchart.id + '(no)->' + this.payload.flowchart.nextNode;
+    } else {
+        nextNodeData = this.payload.flowchart.id + '(no)->' + this.payload.flowchart.nextNode;
+    }
+
+    if (nextNodeData) {
+        nodeDeclarationCode.push(nextNodeData);
+    }
 };
 
 ElseIfStatement.prototype.createNodeNextCodeForBody = function (nodeDeclarationCode) {
@@ -154,11 +155,12 @@ ElseIfStatement.prototype.createNodeNextCodeForBody = function (nodeDeclarationC
 };
 
 ElseIfStatement.prototype.markNodeAsVisited = function (isFunctionDone) {
-    if(isFunctionDone.isFunctionDone) return;
+    if (isFunctionDone.isFunctionDone || isFunctionDone.isEnteredIfStatement) return;
 
     this.payload.flowchart.data += '|approved';
 
     if (this.payload.style.backgroundColor === '#7FFF00') {
+        isFunctionDone.isEnteredIfStatement = true;
         let flowchart = new FlowchartHandler(this.payload.body, this);
         flowchart.markNodeAsVisited(isFunctionDone);
     }

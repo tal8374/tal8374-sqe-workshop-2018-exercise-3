@@ -1,15 +1,16 @@
 import {ColorHandler} from './color-handler';
 
-function FunctionStatement(wrapper, payloads, input) {
+function FunctionStatement(wrapper, payloads, input, isMarked) {
     this.payloads = payloads;
     this.wrapper = wrapper;
     this.input = input;
+    this.isMarked = isMarked;
 }
 
 FunctionStatement.prototype.colorCode = function () {
     let bodyCode = this.payloads.body;
 
-    let colorCreator = new ColorHandler(bodyCode, this, this.input);
+    let colorCreator = new ColorHandler(bodyCode, this, this.input, this.isMarked);
     colorCreator.colorCode();
 };
 
