@@ -23,7 +23,7 @@ IfStatement.prototype.colorCondition = function () {
 IfStatement.prototype.handleBody = function () {
     let bodyCode = this.payload.body;
 
-    let colorCreator = new ColorHandler(bodyCode, this, this.input);
+    let colorCreator = new ColorHandler(bodyCode, this, this.input, this.isMarked);
     colorCreator.colorCode();
 };
 
